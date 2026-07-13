@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Git 工作流入门：从零到 GitHub 绿点墙 — ylsh0452 技术博客</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="site-title">&lt;<span>ylsh0452</span> /&gt;</a>
+      <nav class="header-nav">
+        <a href="../index.html">文章</a>
+        <a href="https://github.com/ylsh0452" target="_blank" rel="noopener">GitHub</a>
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="切换主题">🌙</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <a href="../index.html" class="back-link">← 返回文章列表</a>
+
+    <header class="article-header">
+      <h1>Git 工作流入门：从零到 GitHub 绿点墙</h1>
+      <div class="article-meta">
+        <span>📅 2026-07-13</span>
+        <span>🏷️ 开发工具</span>
+        <span>⏱️ 约 7 分钟</span>
+      </div>
+    </header>
+
+    <article class="article-content">
+
+      <div class="highlight-box">
+        <strong>📌 为什么写这篇</strong><br>
+        我的个人壁垒路线图里写了一个目标：「GitHub 绿点墙持续点亮」。这不是为了刷贡献数，而是强迫自己养成"做完就提交、提交就推送"的习惯。这篇文章是我从 git init 到日常 Git 工作流的实操记录，面向和我一样刚开始系统使用 Git 的开发者。
+      </div>
+
+      <h2>一、Git 解决什么问题</h2>
+
+      <p>在接触 Git 之前，我的"版本控制"是这样的：</p>
+      <pre><code>项目_v1.html
+项目_v2_最终版.html
+项目_v3_真的最终版.html
+项目_v3_真的最终版_改.html</code></pre>
+
+      <p>Git 解决三个核心问题：</p>
+      <ol>
+        <li><strong>版本追踪</strong>：每次修改都有记录，随时可以回到之前的任何一个版本</li>
+        <li><strong>协作</strong>：多人同时改同一个项目，不会互相覆盖</li>
+        <li><strong>备份与展示</strong>：代码推送到 GitHub，既是备份也是作品集</li>
+      </ol>
+
+      <h2>二、从零开始：一个项目的一生</h2>
+
+      <h3>2.1 初始化仓库</h3>
+      <pre><code># 进入项目目录
+cd my-project
+
+# 初始化 Git 仓库
+git init
+
+# 设置主分支名为 main
+git branch -M main</code></pre>
+
+      <h3>2.2 第一次提交</h3>
+      <pre><code># 添加所有文件到暂存区
+git add .
+
+# 提交，附上说明信息
+git commit -m "初始化项目：创建基本目录结构"</code></pre>
+
+      <p>这里有一个重要概念：<strong>暂存区（Staging Area）</strong>。<code>git add</code> 把文件放进暂存区，<code>git commit</code> 把暂存区的内容正式记录为一个版本。这个两步走的设计让你可以精确控制每次提交包含哪些文件。</p>
+
+      <h3>2.3 关联远程仓库并推送</h3>
+      <pre><code># 关联 GitHub 远程仓库
+git remote add origin https://github.com/username/repo-name.git
+
+# 推送代码
+git push -u origin main</code></pre>
+
+      <h3>2.4 日常修改流程</h3>
+      <pre><code># 工作 → 提交 → 推送，这就是日常循环
+git add .
+git commit -m "添加文章列表页面，优化移动端样式"
+git push</code></pre>
+
+      <p>这是我的日常节奏：<strong>每完成一个小功能或一个逻辑模块，就 commit 一次</strong>。不要攒着一天只提交一次——小步提交让每个版本的改动都清晰可追溯。</p>
+
+      <h2>三、核心命令速查</h2>
+
+      <table>
+        <tr><th>命令</th><th>作用</th><th>使用频率</th></tr>
+        <tr><td><code>git status</code></td><td>查看当前状态：哪些文件改了、哪些在暂存区</td><td>⭐⭐⭐⭐⭐</td></tr>
+        <tr><td><code>git add .</code></td><td>添加所有变更到暂存区</td><td>⭐⭐⭐⭐⭐</td></tr>
+        <tr><td><code>git commit -m "..."</code></td><td>提交暂存区的内容</td><td>⭐⭐⭐⭐⭐</td></tr>
+        <tr><td><code>git push</code></td><td>推送本地提交到远程</td><td>⭐⭐⭐⭐⭐</td></tr>
+        <tr><td><code>git pull</code></td><td>拉取远程更新到本地</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td><code>git log --oneline</code></td><td>查看提交历史（简洁版）</td><td>⭐⭐⭐</td></tr>
+        <tr><td><code>git diff</code></td><td>查看具体改了什么</td><td>⭐⭐⭐</td></tr>
+        <tr><td><code>git restore 文件名</code></td><td>撤销某个文件的修改（回到上次 commit 的状态）</td><td>⭐⭐</td></tr>
+      </table>
+
+      <h2>四、写 Commit Message 的习惯</h2>
+
+      <p>好的 commit message 让你三个月后还能看懂自己做了什么。我遵循的格式很简单：</p>
+
+      <pre><code># 格式：[动作] + [对象] + [简要说明]
+git commit -m "添加 文章详情页模板"
+git commit -m "修复 移动端导航栏溢出问题"
+git commit -m "优化 首页加载速度，压缩图片资源"</code></pre>
+
+      <p><strong>常用动作词：</strong>添加、修复、优化、重构、删除、更新、合并。</p>
+
+      <p>避免这样的提交信息：<code>"改了一些东西"</code>、<code>"update"</code>、<code>"fix bug"</code>——这些在三个月后毫无意义。</p>
+
+      <h2>五、几个实用场景</h2>
+
+      <h3>场景 1：不小心改了不该改的文件</h3>
+      <pre><code># 查看改了哪些文件
+git status
+
+# 撤销某个文件的修改
+git restore 文件名</code></pre>
+
+      <h3>场景 2：提交信息写错了</h3>
+      <pre><code># 修改最近一次提交的信息
+git commit --amend -m "正确的提交信息"</code></pre>
+
+      <h3>场景 3：想查看某次提交改了哪些文件</h3>
+      <pre><code># 先看提交历史
+git log --oneline
+
+# 再看具体某次提交的内容
+git show 提交ID</code></pre>
+
+      <h2>六、GitHub 绿点墙：把提交变成习惯</h2>
+
+      <p>GitHub 个人主页的贡献热力图（绿点墙）是一个很好的习惯养成工具。不是为了给别人看，而是给自己一个视觉反馈——<strong>"今天写了代码，有绿点"</strong>。这比任何 TODO 清单都直观。</p>
+
+      <p>我的目标：在 DEEP 营期间保持每天至少一次提交。不是为了刷数量，而是因为：</p>
+      <ul>
+        <li><strong>每天提交意味着每天有产出</strong>——哪怕只是修改一个 CSS 属性</li>
+        <li><strong>小步提交降低了心理门槛</strong>——不需要"完成一个大功能"才 commit</li>
+        <li><strong>提交记录是最好的学习日志</strong>——回头看绿点墙，能看到自己每天在做什么</li>
+      </ul>
+
+      <h2>七、总结</h2>
+
+      <p>Git 不是学完再用的工具——它是用着用着就学会的工具。关键是：</p>
+      <ol>
+        <li><strong>从第一个项目就开始用</strong>，不要等"项目变复杂了再说"</li>
+        <li><strong>养成小步提交的习惯</strong>，每个逻辑单元提交一次</li>
+        <li><strong>写好 commit message</strong>，未来的你会感谢现在的你</li>
+        <li><strong>push 到 GitHub</strong>，本地 Git + 远程 GitHub 才是完整工作流</li>
+      </ol>
+
+      <blockquote>
+        不要追求完美的 Git 工作流。先做到"每天 add + commit + push"，这就是 90 分。
+      </blockquote>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <p>Built with ❤️ and <a href="https://claude.ai/code" target="_blank" rel="noopener">Claude Code</a> · ylsh0452 © 2026</p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
