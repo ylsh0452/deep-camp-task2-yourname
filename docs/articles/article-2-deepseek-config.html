@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeepSeek V4 Pro 接入 Claude Code 配置指南 — ylsh0452 技术博客</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="site-title">&lt;<span>ylsh0452</span> /&gt;</a>
+      <nav class="header-nav">
+        <a href="../index.html">文章</a>
+        <a href="https://github.com/ylsh0452" target="_blank" rel="noopener">GitHub</a>
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="切换主题">🌙</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <a href="../index.html" class="back-link">← 返回文章列表</a>
+
+    <header class="article-header">
+      <h1>DeepSeek V4 Pro 接入 Claude Code 配置指南</h1>
+      <div class="article-meta">
+        <span>📅 2026-07-13</span>
+        <span>🏷️ 工具配置</span>
+        <span>⏱️ 约 6 分钟</span>
+      </div>
+    </header>
+
+    <article class="article-content">
+
+      <div class="highlight-box">
+        <strong>📌 背景</strong><br>
+        我的 Claude Code 日常使用 DeepSeek V4 Pro 作为后端推理模型，通过 CCSwitch 进行 API 代理接入。这篇文章记录完整的配置流程、踩坑经历和原理理解，帮助同样想使用非 Anthropic 模型驱动 Claude Code 的人。
+      </div>
+
+      <h2>一、为什么用 DeepSeek 驱动 Claude Code？</h2>
+
+      <p>Claude Code 默认使用 Anthropic 自家的 Claude 模型。但出于成本和可用性考虑，我选择用 DeepSeek V4 Pro 作为主力推理引擎：</p>
+
+      <ul>
+        <li><strong>成本优势</strong>：DeepSeek 的 API 定价比 Claude 系列更经济</li>
+        <li><strong>中文能力</strong>：DeepSeek V4 Pro 的中文理解和生成质量很高，适合日常使用</li>
+        <li><strong>可用性</strong>：作为国内模型，访问延迟更低</li>
+      </ul>
+
+      <p>但 Claude Code 本身不直接支持 DeepSeek 的 API。这时候就需要一个"翻译层"——把 DeepSeek 的 API 包装成 Claude Code 能理解的格式。这个翻译层就是 CCSwitch。</p>
+
+      <h2>二、工作原理：API 代理是什么</h2>
+
+      <p>用通俗的方式解释：</p>
+
+      <pre><code>Claude Code（客户端）
+    │
+    ▼  发送请求（Anthropic API 格式）
+CCSwitch（代理层）
+    │
+    ▼  转换请求 → 转发到 DeepSeek API
+DeepSeek V4 Pro（推理引擎）
+    │
+    ▼  返回结果
+CCSwitch（代理层）
+    │
+    ▼  转换回 Anthropic API 格式
+Claude Code（客户端）← 收到结果</code></pre>
+
+      <p><strong>CCSwitch 做三件事：</strong></p>
+      <ol>
+        <li><strong>接收</strong>：接收 Claude Code 发出的 Anthropic 格式的 API 请求</li>
+        <li><strong>转换</strong>：把请求体翻译成 DeepSeek API 能理解的格式（主要是模型名称映射和参数转换）</li>
+        <li><strong>回传</strong>：把 DeepSeek 的返回结果重新包装成 Anthropic API 的格式，让 Claude Code 正常解析</li>
+      </ol>
+
+      <h2>三、配置步骤</h2>
+
+      <h3>3.1 准备工作</h3>
+      <p>你需要有一个 DeepSeek API Key。在 <a href="https://platform.deepseek.com" target="_blank" rel="noopener">DeepSeek 开放平台</a> 注册并获取。</p>
+
+      <h3>3.2 安装 CCSwitch</h3>
+      <p>CCSwitch 是一个 Node.js 工具，通过 npm 全局安装：</p>
+      <pre><code>npm install -g ccswitch</code></pre>
+
+      <h3>3.3 配置 API 后端</h3>
+      <p>核心配置：告诉 CCSwitch 把请求转发到哪里，以及用哪个模型。</p>
+      <pre><code># 配置 API 后端地址
+ccswitch config set api_base https://api.deepseek.com/anthropic
+
+# 配置主模型
+ccswitch config set model deepseek-v4-pro
+
+# 设置 DeepSeek API Key
+ccswitch config set api_key YOUR_DEEPSEEK_API_KEY</code></pre>
+
+      <h3>3.4 配置模型映射</h3>
+      <p>Claude Code 会请求多种模型变体（如 claude-sonnet-5、claude-opus-4-8 等），需要全部映射到 deepseek-v4-pro：</p>
+      <pre><code># 所有变体统一映射
+ccswitch config set model_map '{
+  "claude-sonnet-5": "deepseek-v4-pro",
+  "claude-opus-4-8": "deepseek-v4-pro",
+  "claude-haiku-4-5": "deepseek-v4-pro",
+  "claude-fable-5": "deepseek-v4-pro"
+}'</code></pre>
+
+      <h3>3.5 启动代理服务</h3>
+      <pre><code>ccswitch start</code></pre>
+      <p>启动后 CCSwitch 在本地监听一个端口（默认 8080），Claude Code 通过这个端口与 DeepSeek 通信。</p>
+
+      <h3>3.6 配置 Claude Code</h3>
+      <p>在 Claude Code 中设置 API 后端指向 CCSwitch：</p>
+      <pre><code># Claude Code 配置
+claude config set api_base http://localhost:8080</code></pre>
+
+      <h2>四、踩坑记录</h2>
+
+      <h3>坑 1：模型名称不匹配</h3>
+      <p>刚开始配置时，Claude Code 报了"模型不可用"的错误。原因是 Claude Code 内部使用了多个模型名称（不同任务场景调用不同模型），而我只映射了其中一个。解决方法就是上面的"全变体映射"——把所有可能出现的模型名都指向 deepseek-v4-pro。</p>
+
+      <h3>坑 2：DeepSeek API 偶尔不可用</h3>
+      <p>DeepSeek 的服务偶尔会遇到高峰期延迟或短暂不可用。这时候 Claude Code 会报超时错误。目前没有完美的自动切换方案，我的做法是：遇到服务不可用时等几分钟再试，或者临时切回默认 Anthropic API。</p>
+
+      <h3>坑 3：配置参数的理解门槛</h3>
+      <p>最初配置 CCSwitch 时，我对"API 代理"这个概念理解不深，只知道照着教程做。后来才慢慢明白它本质上是一个中间件——<strong>不修改 Claude Code 的代码，只是在通信链路上插入了一层转换</strong>。这个理解对我后续排查问题帮助很大。</p>
+
+      <h2>五、性价比评估</h2>
+      <table>
+        <tr><th>方案</th><th>月度成本（估算）</th><th>中文质量</th><th>可用性</th></tr>
+        <tr><td>纯 Claude API</td><td>较高</td><td>⭐⭐⭐</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td>DeepSeek V4 Pro（本次配置）</td><td>低</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐</td></tr>
+      </table>
+
+      <p>对我目前的使用量来说，DeepSeek 方案性价比更高。但如果做英文项目或需要最高精度的代码生成，原生 Claude 模型可能更合适。</p>
+
+      <h2>六、总结</h2>
+      <p>CCSwitch + DeepSeek 这套配置让 Claude Code 的使用成本大幅降低，同时保持了良好的中文交互体验。但配置过程也暴露了我在"工具链理解深度"上的不足——能配置成功不代表真正理解原理。后续我计划深入了解 API 代理的更多细节，提升独立排查问题的能力。</p>
+
+      <blockquote>
+        工具链配置的深度，决定了你遇到问题时是直接卡住，还是能自己排查。追求"能用"和追求"理解"，是 L2 和 L3 的关键分界线。
+      </blockquote>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <p>Built with ❤️ and <a href="https://claude.ai/code" target="_blank" rel="noopener">Claude Code</a> · ylsh0452 © 2026</p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
