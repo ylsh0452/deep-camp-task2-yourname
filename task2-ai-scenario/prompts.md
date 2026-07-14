@@ -10,7 +10,7 @@
 
 **完整 Prompt**：
 ```
-帮我创建一个人技术博客的静态网站项目，放到 D:\wadfaf\deep003-tech-blog\deliverables\blog\ 目录下。
+帮我创建一个个人技术博客的静态网站项目，放到项目 docs/ 目录下。
 
 要求：
 1. 纯 HTML/CSS/JS，不依赖任何框架或构建工具
