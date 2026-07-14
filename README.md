@@ -42,6 +42,7 @@
 
 | 文档 | 说明 |
 |------|------|
+| [raw_inputs.md](./sources/raw_inputs.md) | 原始输入材料：哪些是我提供的、哪些来自外部 |
 | [references.md](./sources/references.md) | 工具、平台、学习资源引用 |
 
 ---
