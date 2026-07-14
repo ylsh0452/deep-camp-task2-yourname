@@ -18,7 +18,8 @@
 | [ai_tools.md](./task2-ai-scenario/ai_tools.md) | AI 工具选择与分工：每个工具负责什么、为什么选它 |
 | [ai_workflow.md](./task2-ai-scenario/ai_workflow.md) | AI 工作流程记录：8 步完整过程 + 每步的人机分工 |
 | [prompts.md](./task2-ai-scenario/prompts.md) | 关键 Prompt 清单：7 个 Prompt + 质量评价 |
-| [comparison.md](./task2-ai-scenario/comparison.md) | AI 前后效果对比：时间/质量/学习收获 3 维度 |
+| [comparison.md](./task2-ai-scenario/comparison.md) | AI 前后效果对比：7 问 + 对比表格 + 最有帮助/不可靠/可复用 |
+| [edits.md](./task2-ai-scenario/edits.md) | 个人修改痕迹：8 处人工修改，含原始问题 + 修改原因 + 效果 |
 | [reflection.md](./task2-ai-scenario/reflection.md) | 任务复盘：收获、不足、对后续任务的启示 |
 
 ### 截图 `/screenshots/`
