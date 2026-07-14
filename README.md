@@ -15,6 +15,7 @@
 | [task_goal.md](./task2-ai-scenario/task_goal.md) | 任务目标：目标拆解 + 衡量标准 + 完成情况 |
 | [scenario_description.md](./task2-ai-scenario/scenario_description.md) | 真实场景说明：痛点分析 + AI/无AI 对比预估 |
 | [task1-connection.md](./task2-ai-scenario/task1-connection.md) | 任务一关联：壁垒判断如何导向本次场景选择 |
+| [ai_tools.md](./task2-ai-scenario/ai_tools.md) | AI 工具选择与分工：每个工具负责什么、为什么选它 |
 | [ai_workflow.md](./task2-ai-scenario/ai_workflow.md) | AI 工具使用流程：3 阶段完整记录 + 人机分工 |
 | [prompts.md](./task2-ai-scenario/prompts.md) | 关键 Prompt 清单：7 个 Prompt + 质量评价 |
 | [comparison.md](./task2-ai-scenario/comparison.md) | AI 前后效果对比：时间/质量/学习收获 3 维度 |
