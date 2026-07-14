@@ -23,7 +23,7 @@
 - 确定功能列表：响应式、暗色模式、文章列表、文章详情、Markdown 风格排版
 
 **AI 做的事**：
-- 我向 Claude Code 描述了博客需求和目录结构（见 key-prompts.md #1）
+- 我向 Claude Code 描述了博客需求和目录结构（见 prompts.md #1）
 - Claude Code 理解了完整需求后，自行规划了文件创建顺序
 
 **AI 的局限**：
@@ -143,7 +143,7 @@ AI 润色语言 + 检查格式（3 分钟）
 
 ### AI 辅助文档生成
 
-所有 Markdown 文档（README、scenario、ai-workflow、key-prompts、comparison、retrospective）由我口述框架和要点，AI 格式化输出。
+所有 Markdown 文档（README、scenario_description、ai_workflow、prompts、comparison、reflection）由我口述框架和要点，AI 格式化输出。
 
 **我做的事**：
 - 定义文档结构和核心论点
