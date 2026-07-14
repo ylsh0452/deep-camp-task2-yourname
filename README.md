@@ -16,7 +16,7 @@
 | [scenario_description.md](./task2-ai-scenario/scenario_description.md) | 真实场景说明：痛点分析 + AI/无AI 对比预估 |
 | [task1-connection.md](./task2-ai-scenario/task1-connection.md) | 任务一关联：壁垒判断如何导向本次场景选择 |
 | [ai_tools.md](./task2-ai-scenario/ai_tools.md) | AI 工具选择与分工：每个工具负责什么、为什么选它 |
-| [ai_workflow.md](./task2-ai-scenario/ai_workflow.md) | AI 工具使用流程：3 阶段完整记录 + 人机分工 |
+| [ai_workflow.md](./task2-ai-scenario/ai_workflow.md) | AI 工作流程记录：8 步完整过程 + 每步的人机分工 |
 | [prompts.md](./task2-ai-scenario/prompts.md) | 关键 Prompt 清单：7 个 Prompt + 质量评价 |
 | [comparison.md](./task2-ai-scenario/comparison.md) | AI 前后效果对比：时间/质量/学习收获 3 维度 |
 | [reflection.md](./task2-ai-scenario/reflection.md) | 任务复盘：收获、不足、对后续任务的启示 |
